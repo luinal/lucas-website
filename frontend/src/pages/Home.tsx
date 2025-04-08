@@ -9,6 +9,19 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LaunchIcon from '@mui/icons-material/Launch';
 import EmailIcon from '@mui/icons-material/Email';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { logEvent } from '../config/analytics';
+
+// Imports de imagens
+import ecommerceImg from '../assets/images/projects/web/ecommerce.png';
+import dashboardImg from '../assets/images/projects/web/dashboard.png';
+import salesAnalysisImg from '../assets/images/projects/data/sales-analysis.png';
+import analyticsImg from '../assets/images/projects/data/analytics.png';
+import recommendationImg from '../assets/images/projects/ml/recommendation.png';
+import anomalyImg from '../assets/images/projects/ml/anomaly.png';
+import snakeImg from '../assets/images/projects/games/snake.png';
+import tictactoeImg from '../assets/images/projects/games/tictactoe.png';
+import calculatorImg from '../assets/images/projects/mini/calculator.png';
+import todoImg from '../assets/images/projects/mini/todo.png';
 
 const MotionPaper = motion(Paper);
 
@@ -93,6 +106,42 @@ const projects = {
       demo: 'https://demo-projeto6.com',
     },
   ],
+  games: [
+    {
+      title: 'Snake Game',
+      description: 'Jogo clássico da cobrinha desenvolvido com React e TypeScript, com recursos modernos e design responsivo.',
+      image: snakeImg,
+      technologies: ['React', 'TypeScript', 'CSS', 'HTML5'],
+      github: 'https://github.com/luinal/snake-react',
+      demo: 'https://snake-react-5yxfa2wau-luinals-projects.vercel.app/',
+    },
+    {
+      title: 'Tic Tac Toe',
+      description: 'Jogo da velha implementado com React e TypeScript, incluindo histórico de jogadas e modo multiplayer local.',
+      image: tictactoeImg,
+      technologies: ['React', 'TypeScript', 'Material-UI'],
+      github: 'https://github.com/luinal/tic-tac-react',
+      demo: 'https://tic-tac-react-5g8nlxmf7-luinals-projects.vercel.app/',
+    },
+  ],
+  mini: [
+    {
+      title: 'Calculadora React',
+      description: 'Calculadora interativa com operações básicas e avançadas.',
+      image: 'https://source.unsplash.com/random/800x600?calculator',
+      technologies: ['React', 'JavaScript', 'CSS'],
+      github: 'https://github.com/seu-usuario/calculadora',
+      demo: 'https://demo-calculadora.com',
+    },
+    {
+      title: 'Todo List',
+      description: 'Aplicativo de lista de tarefas com recursos de CRUD e persistência local.',
+      image: todoImg,
+      technologies: ['React', 'LocalStorage', 'CSS'],
+      github: 'https://github.com/luinal/todo-react',
+      demo: 'https://todo-react-av5kf2hxj-luinals-projects.vercel.app/',
+    },
+  ],
 };
 
 const Home: React.FC = () => {
@@ -130,6 +179,16 @@ const Home: React.FC = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleProjectClick = (projectName: string) => {
+    logEvent('Projeto', `Clicou em ${projectName}`);
+    // ... resto da lógica
+  };
+
+  const handleContactSubmit = () => {
+    logEvent('Contato', 'Formulário enviado');
+    // ... resto da lógica
   };
 
   return (
@@ -300,6 +359,8 @@ const Home: React.FC = () => {
                 <Tab label="Desenvolvimento Web" />
                 <Tab label="Análise de Dados" />
                 <Tab label="Machine Learning" />
+                <Tab label="Jogos" />
+                <Tab label="Mini Projetos" />
               </Tabs>
             </Box>
 
@@ -398,6 +459,98 @@ const Home: React.FC = () => {
             <TabPanel value={tabValue} index={2}>
               <Grid container spacing={4}>
                 {projects.ml.map((project, index) => (
+                  <Grid item xs={12} md={6} key={index}>
+                    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                      <CardMedia
+                        component="img"
+                        height="200"
+                        image={project.image}
+                        alt={project.title}
+                      />
+                      <CardContent sx={{ flexGrow: 1 }}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {project.title}
+                        </Typography>
+                        <Typography color="text.secondary" paragraph>
+                          {project.description}
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                          {project.technologies.map((tech) => (
+                            <Chip key={tech} label={tech} size="small" />
+                          ))}
+                        </Box>
+                      </CardContent>
+                      <CardActions>
+                        <IconButton
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <GitHubIcon />
+                        </IconButton>
+                        <IconButton
+                          href={project.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <LaunchIcon />
+                        </IconButton>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            </TabPanel>
+
+            <TabPanel value={tabValue} index={3}>
+              <Grid container spacing={4}>
+                {projects.games.map((project, index) => (
+                  <Grid item xs={12} md={6} key={index}>
+                    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                      <CardMedia
+                        component="img"
+                        height="200"
+                        image={project.image}
+                        alt={project.title}
+                      />
+                      <CardContent sx={{ flexGrow: 1 }}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {project.title}
+                        </Typography>
+                        <Typography color="text.secondary" paragraph>
+                          {project.description}
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                          {project.technologies.map((tech) => (
+                            <Chip key={tech} label={tech} size="small" />
+                          ))}
+                        </Box>
+                      </CardContent>
+                      <CardActions>
+                        <IconButton
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <GitHubIcon />
+                        </IconButton>
+                        <IconButton
+                          href={project.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <LaunchIcon />
+                        </IconButton>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            </TabPanel>
+
+            <TabPanel value={tabValue} index={4}>
+              <Grid container spacing={4}>
+                {projects.mini.map((project, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                       <CardMedia

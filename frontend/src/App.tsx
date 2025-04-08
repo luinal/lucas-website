@@ -1,11 +1,13 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
+import { initGA, logPageView } from './config/analytics';
+
 
 const theme = createTheme({
   palette: {
@@ -118,17 +120,37 @@ const theme = createTheme({
   },
 });
 
+// Componente separado para o conteúdo que usa useLocation
+function AppContent() {
+  const location = useLocation();
+
+  useEffect(() => {
+    logPageView();
+  }, [location]);
+
+  return (
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </>
+  );
+}
+
 function App() {
+  useEffect(() => {
+    // Inicializa o Google Analytics
+    initGA();
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
+        <AppContent />
       </Router>
     </ThemeProvider>
   );
